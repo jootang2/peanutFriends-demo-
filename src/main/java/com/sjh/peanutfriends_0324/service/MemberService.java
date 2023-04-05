@@ -25,8 +25,9 @@ public class MemberService {
         return saveMember;
     }
 
+    @Transactional(readOnly = true)
     public Member findByEmail(String email){
-        return memberRepository.findByEmail(email).
-                orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
     }
 }

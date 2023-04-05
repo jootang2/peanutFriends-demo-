@@ -40,4 +40,15 @@ public class Member {
         roles.add(role);
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "memberId=" + memberId +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", regdate=" + regdate +
+                '}';
+    }
+
 }
