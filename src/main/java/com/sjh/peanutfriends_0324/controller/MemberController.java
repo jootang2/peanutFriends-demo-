@@ -3,10 +3,7 @@ package com.sjh.peanutfriends_0324.controller;
 import com.sjh.peanutfriends_0324.domain.Member;
 import com.sjh.peanutfriends_0324.domain.RefreshToken;
 import com.sjh.peanutfriends_0324.domain.Role;
-import com.sjh.peanutfriends_0324.dto.MemberLoginDto;
-import com.sjh.peanutfriends_0324.dto.MemberLoginResponseDto;
-import com.sjh.peanutfriends_0324.dto.MemberSignUpResponseDto;
-import com.sjh.peanutfriends_0324.dto.MemberSingUpDto;
+import com.sjh.peanutfriends_0324.dto.*;
 import com.sjh.peanutfriends_0324.security.jwt.util.JwtTokenizer;
 import com.sjh.peanutfriends_0324.service.MemberService;
 import com.sjh.peanutfriends_0324.service.RefreshTokenService;
@@ -16,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,15 +55,6 @@ public class MemberController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         Member member = memberService.findByEmail(loginDto.getEmail());
-        System.out.println(member.toString());
-        /*if(loginDto.getPassword().equals(member.getPassword())){
-            System.out.println("======================");
-            System.out.println(loginDto.getPassword());
-            System.out.println(member.getPassword());
-            System.out.println(loginDto.getPassword() != member.getPassword());
-            System.out.println("======================");
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }*/
         List<String> roles = member.getRoles().stream().map(Role::getName).collect(Collectors.toList());
 
         String accessToken = jwtTokenizer.createAccessToken(member.getMemberId(), member.getEmail(), roles);
@@ -87,8 +72,11 @@ public class MemberController {
                 .nickname(member.getName())
                 .build();
         return new ResponseEntity(memberLoginResponseDto, HttpStatus.OK);
+    }
 
-
-
+    @DeleteMapping("/logout")
+    public ResponseEntity logout(@RequestBody RefreshTokenDto refreshTokenDto) {
+        refreshTokenService.deleteRefreshToken(refreshTokenDto.getRefreshToken());
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
