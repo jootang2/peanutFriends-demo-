@@ -34,6 +34,13 @@ dependencies {
 
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    //gson - json 메시지를 다루기 위한 라이브러리
+    implementation 'com.google.code.gson:gson'
+
+    // dto validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 tasks.named('test') {
