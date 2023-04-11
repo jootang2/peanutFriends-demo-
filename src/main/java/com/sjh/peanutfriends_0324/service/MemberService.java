@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,10 @@ public class MemberService {
     public Member findByEmail(String email){
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Member> getMember(Long memberId) {
+        return memberRepository.findById(memberId);
     }
 }

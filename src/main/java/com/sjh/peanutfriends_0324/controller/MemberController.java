@@ -8,6 +8,7 @@ import com.sjh.peanutfriends_0324.security.jwt.util.JwtTokenizer;
 import com.sjh.peanutfriends_0324.service.MemberService;
 import com.sjh.peanutfriends_0324.service.RefreshTokenService;
 import com.sun.net.httpserver.HttpsServer;
+import io.jsonwebtoken.Claims;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,8 @@ public class MemberController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signUp")
-    public ResponseEntity signUp(@RequestBody @Valid MemberSingUpDto memberSingUpDto, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public ResponseEntity signUp(@RequestBody @Valid MemberSingUpDto memberSingUpDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         Member member = new Member();
@@ -50,8 +51,8 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid MemberLoginDto loginDto, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public ResponseEntity login(@RequestBody @Valid MemberLoginDto loginDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         Member member = memberService.findByEmail(loginDto.getEmail());
@@ -79,4 +80,29 @@ public class MemberController {
         refreshTokenService.deleteRefreshToken(refreshTokenDto.getRefreshToken());
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity requestRefresh(@RequestBody RefreshTokenDto refreshTokenDto) {
+        RefreshToken refreshToken = refreshTokenService.findRefreshToken(refreshTokenDto.getRefreshToken()).orElseThrow(() -> new IllegalArgumentException("Refresh token not found"));
+        Claims claims = jwtTokenizer.parseRefreshToken(refreshToken.getValue());
+
+        Long userId = Long.valueOf((Integer) claims.get("userId"));
+
+        Member member = memberService.getMember(userId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+
+        List roles = (List) claims.get("roles");
+        String email = claims.getSubject();
+
+        String accessToken = jwtTokenizer.createAccessToken(userId, email, roles);
+
+        MemberLoginResponseDto loginResponse = MemberLoginResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshTokenDto.getRefreshToken())
+                .memberId(member.getMemberId())
+                .nickname(member.getName())
+                .build();
+
+        return new ResponseEntity(loginResponse, HttpStatus.OK);
+    }
+
 }
