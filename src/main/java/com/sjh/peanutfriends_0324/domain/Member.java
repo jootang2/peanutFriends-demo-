@@ -29,6 +29,10 @@ public class Member {
     @CreationTimestamp
     private LocalDateTime regdate;
 
+    @ManyToOne
+    @JoinColumn(name="BASKET_ID")
+    private Basket basket;
+
     @ManyToMany
     @JoinTable(name = "member_role",
             joinColumns = @JoinColumn(name = "member_id"),
@@ -39,7 +43,6 @@ public class Member {
     public void addRole(Role role) {
         roles.add(role);
     }
-
     @Override
     public String toString() {
         return "User{" +
@@ -50,5 +53,4 @@ public class Member {
                 ", regdate=" + regdate +
                 '}';
     }
-
 }
