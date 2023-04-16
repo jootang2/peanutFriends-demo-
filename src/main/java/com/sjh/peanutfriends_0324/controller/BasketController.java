@@ -1,15 +1,17 @@
 package com.sjh.peanutfriends_0324.controller;
 
 import com.sjh.peanutfriends_0324.domain.Basket;
+import com.sjh.peanutfriends_0324.domain.Member;
+import com.sjh.peanutfriends_0324.domain.Role;
 import com.sjh.peanutfriends_0324.dto.AddBasketDto;
 import com.sjh.peanutfriends_0324.service.BasketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,5 +28,17 @@ public class BasketController {
         basket.setEndDate(addBasketDto.getEndDate());
         Basket saveBasket = basketService.addBasket(basket);
         return saveBasket;
+    }
+
+    @GetMapping("/baskets")
+    public List<Basket> getBaskets(){
+        return basketService.getBasket();
+    }
+
+    @PostMapping("/basket/{basketId}/signUp")
+    public Basket signUpBasket(@PathVariable Long basketId){
+        Basket findBasketById = basketService.findById(basketId);
+        List<Member> memberList = findBasketById.getMemberList();
+        return findBasketById;
     }
 }

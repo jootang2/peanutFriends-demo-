@@ -43,6 +43,21 @@ public class Member {
     public void addRole(Role role) {
         roles.add(role);
     }
+
+    public Member() {
+
+    }
+
+    public Member(Long memberId, String email, String name, String password, LocalDateTime regdate, Basket basket) {
+        this.memberId = memberId;
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.regdate = regdate;
+        this.basket = basket;
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +

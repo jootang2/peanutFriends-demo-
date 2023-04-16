@@ -18,4 +18,11 @@ public class Role {
     @Column(length = 20)
     private String name;
 
+    public Role() {
+
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
 }

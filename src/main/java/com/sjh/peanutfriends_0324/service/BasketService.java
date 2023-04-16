@@ -5,6 +5,9 @@ import com.sjh.peanutfriends_0324.repository.BasketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class BasketService {
@@ -14,5 +17,15 @@ public class BasketService {
     public Basket addBasket(Basket basket) {
         Basket saveBasket = basketRepository.save(basket);
         return saveBasket;
+    }
+
+    public List<Basket> getBasket(){
+        List<Basket> baskets = basketRepository.findAll();
+        return baskets;
+    }
+
+    public Basket findById(Long basketId) {
+        Optional<Basket> findBasket = basketRepository.findById(basketId);
+        return findBasket.orElseThrow(()-> new IllegalArgumentException("없는 바스켓입니다."));
     }
 }
