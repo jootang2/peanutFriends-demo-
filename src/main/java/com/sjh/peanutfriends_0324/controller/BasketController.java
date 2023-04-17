@@ -4,6 +4,8 @@ import com.sjh.peanutfriends_0324.domain.Basket;
 import com.sjh.peanutfriends_0324.domain.Member;
 import com.sjh.peanutfriends_0324.domain.Role;
 import com.sjh.peanutfriends_0324.dto.AddBasketDto;
+import com.sjh.peanutfriends_0324.security.jwt.util.IfLogin;
+import com.sjh.peanutfriends_0324.security.jwt.util.LoginUserDto;
 import com.sjh.peanutfriends_0324.service.BasketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
