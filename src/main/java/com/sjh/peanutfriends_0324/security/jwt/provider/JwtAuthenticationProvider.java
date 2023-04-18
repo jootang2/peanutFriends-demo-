@@ -26,9 +26,10 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         Claims claims = jwtTokenizer.parseAccessToken(authenticationToken.getToken());
         // sub에 암호화된 데이터를 집어넣고, 복호화하는 코드를 넣어줄 수 있다.
         String email = claims.getSubject();
+        Long memberId = jwtTokenizer.getUserIdFromToken(authenticationToken.getToken());
         List<GrantedAuthority> authorities = getGrantedAuthorities(claims);
 
-        return new JwtAuthenticationToken(authorities, email, null);
+        return new JwtAuthenticationToken(authorities, memberId, null);
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(Claims claims) {

@@ -19,6 +19,6 @@ public class Basket {
     private String endDate;
 
     @OneToMany(mappedBy = "basket")
-    private List<Member> memberList = new ArrayList<>();
+    private List<MemberBasket> memberBasket = new ArrayList<>();
 
 }

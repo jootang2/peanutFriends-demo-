@@ -41,7 +41,7 @@ public class IfLoginArgumentResolver implements HandlerMethodArgumentResolver {
         Object principal = jwtAuthenticationToken.getPrincipal(); // email
         if (principal == null)
             return null;
-        loginUserDto.setEmail((String)principal);
+        loginUserDto.setMemberId((Long)principal);
 //        System.out.println(loginUserDto.getEmail());
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

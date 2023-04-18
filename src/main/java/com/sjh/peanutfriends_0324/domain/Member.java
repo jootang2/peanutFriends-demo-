@@ -6,7 +6,9 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,9 +31,8 @@ public class Member {
     @CreationTimestamp
     private LocalDateTime regdate;
 
-    @ManyToOne
-    @JoinColumn(name="BASKET_ID")
-    private Basket basket;
+    @OneToMany(mappedBy = "member")
+    private List<MemberBasket> memberBasket = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "member_role",
@@ -48,13 +49,13 @@ public class Member {
 
     }
 
-    public Member(Long memberId, String email, String name, String password, LocalDateTime regdate, Basket basket) {
+    public Member(Long memberId, String email, String name, String password, LocalDateTime regdate, List<MemberBasket> memberBasket, Set<Role> roles) {
         this.memberId = memberId;
         this.email = email;
         this.name = name;
         this.password = password;
         this.regdate = regdate;
-        this.basket = basket;
+        this.memberBasket = memberBasket;
         this.roles = roles;
     }
 

@@ -7,6 +7,7 @@ import com.sjh.peanutfriends_0324.dto.AddBasketDto;
 import com.sjh.peanutfriends_0324.security.jwt.util.IfLogin;
 import com.sjh.peanutfriends_0324.security.jwt.util.LoginUserDto;
 import com.sjh.peanutfriends_0324.service.BasketService;
+import com.sjh.peanutfriends_0324.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,9 +22,10 @@ import java.util.List;
 public class BasketController {
 
     private final BasketService basketService;
-    
+    private final MemberService memberService;
+
     @PostMapping("/basket/create")
-    public Basket addBasket(@RequestBody AddBasketDto addBasketDto) {
+    public Basket addBasket(@IfLogin LoginUserDto loginUserDto, @RequestBody AddBasketDto addBasketDto) {
         Basket basket = new Basket();
         basket.setName(addBasketDto.getName());
         basket.setStartDate(addBasketDto.getStartDate());
@@ -40,7 +42,6 @@ public class BasketController {
     @PostMapping("/basket/{basketId}/signUp")
     public Basket signUpBasket(@PathVariable Long basketId){
         Basket findBasketById = basketService.findById(basketId);
-        List<Member> memberList = findBasketById.getMemberList();
         return findBasketById;
     }
 }
