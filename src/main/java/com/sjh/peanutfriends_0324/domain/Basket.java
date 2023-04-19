@@ -1,5 +1,6 @@
 package com.sjh.peanutfriends_0324.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,10 +16,14 @@ public class Basket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @OneToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member masterMember;
     private String startDate;
     private String endDate;
 
     @OneToMany(mappedBy = "basket")
-    private List<MemberBasket> memberBasket = new ArrayList<>();
+    @JsonIgnore
+    private List<BasketMember> myMember = new ArrayList<>();
 
 }

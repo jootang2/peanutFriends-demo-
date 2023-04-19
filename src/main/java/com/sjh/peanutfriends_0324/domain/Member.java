@@ -1,5 +1,6 @@
 package com.sjh.peanutfriends_0324.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +33,8 @@ public class Member {
     private LocalDateTime regdate;
 
     @OneToMany(mappedBy = "member")
-    private List<MemberBasket> memberBasket = new ArrayList<>();
+    @JsonIgnore
+    private List<BasketMember> myBasket = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "member_role",
@@ -43,30 +45,5 @@ public class Member {
 
     public void addRole(Role role) {
         roles.add(role);
-    }
-
-    public Member() {
-
-    }
-
-    public Member(Long memberId, String email, String name, String password, LocalDateTime regdate, List<MemberBasket> memberBasket, Set<Role> roles) {
-        this.memberId = memberId;
-        this.email = email;
-        this.name = name;
-        this.password = password;
-        this.regdate = regdate;
-        this.memberBasket = memberBasket;
-        this.roles = roles;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "memberId=" + memberId +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", regdate=" + regdate +
-                '}';
     }
 }
