@@ -27,6 +27,11 @@ public class BasketController {
     private final MemberService memberService;
     private final BasketMemberService basketMemberService;
 
+    @GetMapping("/axios/test")
+    public String axiosTest(){
+        return "Axios Test Success";
+    }
+
     @PostMapping("/basket/create")
     public Basket addBasket(@IfLogin LoginUserDto loginUserDto, @RequestBody AddBasketDto addBasketDto) {
         Basket basket = new Basket();

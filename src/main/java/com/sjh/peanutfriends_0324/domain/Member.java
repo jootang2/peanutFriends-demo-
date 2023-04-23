@@ -2,6 +2,7 @@ package com.sjh.peanutfriends_0324.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,12 +22,15 @@ public class Member {
     private Long memberId;
 
     @Column(length = 255)
+    @NotNull
     private String email;
 
     @Column(length = 50)
+    @NotNull
     private String name;
 
     @Column(length = 500)
+    @NotNull
     private String password;
 
     @CreationTimestamp
