@@ -105,4 +105,11 @@ public class MemberController {
         return new ResponseEntity(loginResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}/myPage")
+    public Member myPage(@PathVariable Long userId){
+        Member findMember = memberService.findById(userId);
+        return findMember;
+    }
+
+
 }
